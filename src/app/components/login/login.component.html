@@ -1,0 +1,27 @@
+<div class="container mt-2">
+    <div class="d-flex justify-content-end">
+        <a class="navbar-brand">
+            <img src="https://tuquejasuma.com/media/images/entity62054_square_ySfHTLE.png" alt="Bootstrap" width="60" height="54">
+        </a>
+    </div>
+    <hr class="styled-hr">
+    <div class="row w-100 d-flex justify-content-center">
+        <form action="" (submit)="login()" [formGroup]="miFormulario" class="w-25">
+            <div class="col mb-2">
+                <input type="text" class="form-control mb-2 bg-transparent border-1 text-white inputPlace hover-success" placeholder="User" formControlName="user">
+                <input type="password" class="form-control bg-transparent border-1 text-white inputPlace hover-success" placeholder="password" formControlName="pass">
+                <div *ngIf="hasError">
+                    <p class="text-danger">usuario o contrasenia incorrectos!</p>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-primary text-white w-100">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                Ingresar 
+                <div class="spinner-border align-center" role="status" *ngIf="loading">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </button>
+        </form>
+    </div>
+    
+</div>

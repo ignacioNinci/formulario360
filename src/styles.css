@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(6,5,81,1) 13%, rgba(9,9,121,1) 36%, rgba(0,212,255,1) 99%);
+}
+
+.styled-hr {
+    border: 2px solid white;
+}
+
+.inputPlace::placeholder {
+    color: white
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
