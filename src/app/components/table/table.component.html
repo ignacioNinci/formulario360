@@ -1,63 +1,52 @@
 <app-header></app-header>
-<div class="container mt-5">
-    <div class="container">
+<div class="m-5">
+    <div class="container d-flex flex-row justify-content-between">
         <h1 class="text-light">Reporte de Cobranzas</h1>
-        <form (submit)="getAllCollections()" [formGroup]="miFormulario" class="d-flex justify-content-between w-100 align-items-end">
-            <div class="d-flex flx-row gap-5" *ngIf="tableData.length > 0">
-                <label class="fomr-label text-white " for="">Buscar:</label>
-                <div class="d-flex flex-column">
-                  <input type="text" name="" id="" class="form-control bg-transparent border-1 text-white inputPlace hover-success" placeholder="Informed_date (dd-mm-yyyy)" formControlName="date" (input)="filteredData()">
-                  <div *ngIf="dateError">
-                      <p class="text-danger">Máximo 10 caracteres permitidos</p>
-                  </div>
-                </div>
-                <div class="d-flex flex-column">
-                  <input type="text" name="" id="" class="form-control bg-transparent border-1 text-white inputPlace hover-success" placeholder="Payer_name" formControlName="name" (input)="filteredData()">
-                  <div *ngIf="nameError">
-                      <p class="text-danger">Máximo 30 caracteres permitidos</p>
-                  </div>
-                </div>
-                <div class="d-flex flex-column">
-                  <input type="text" name="" id="" class="form-control bg-transparent border-1 text-white inputPlace hover-success" placeholder="Available_at (dd-mm-yyyy)" formControlName="available" (input)="filteredData()">
-                  <div *ngIf="availableError">
-                    <p class="text-danger">Máximo 10 caracteres permitidos</p>
-                  </div>
-                </div>
+        <div>
+          <button class="btn btn-outline-primary text-white" (click)="getAllCollections()">
+            Mostrar
+            <div class="spinner-border text-primary align-center" role="status" *ngIf="loading">
+              <span class="visually-hidden">Loading...</span>
             </div>
-            <div>
-                <button class="btn btn-outline-primary text-white" type="submit">
-                  Mostrar
-                  <div class="spinner-border text-primary align-center" role="status" *ngIf="loading">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                </button>
-            </div>
-        </form>
+          </button>
+        </div>
     </div>
     <hr class="styled-hr">
-    <div class="table-responsive w-100 card" *ngIf="isShow && !loading">
-      <table class="table table-success styled-hr table-hover table-bordered">
-        <thead class="table-light">
-          <tr>
-            <th scope="col" *ngFor="let column of tableData[0] | keyvalue">{{ column.key | uppercase }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngIf="filteredDataTable.length > 0; else showAllData">
-            <tr *ngFor="let row of filteredDataTable">
-              <td *ngFor="let cell of row | keyvalue">{{ cell.value }}</td>
+
+    <!-- init -->
+    <div class="d-flex flex-row w-100 gap-3">
+      <app-forms *ngIf="isShow && !loading || hasError" (formValue)="formDataChange($event)"></app-forms>
+      <div class="table-responsive w-100 card" *ngIf="isShow && !loading">
+        <table class="table table-primary styled-hr table-hover table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th scope="col" *ngFor="let column of tableData[0] | keyvalue">{{ column.key | uppercase }}</th>
             </tr>
-          </ng-container>
-          <ng-template #showAllData>
-            <tr *ngFor="let row of tableData">
-              <td *ngFor="let cell of row | keyvalue">{{ cell.value }}</td>
-            </tr>
-          </ng-template>
-        </tbody>  
-      </table>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="filteredDataTable.length > 0; else showAllData">
+              <tr *ngFor="let row of filteredDataTable">
+                <td *ngFor="let cell of row | keyvalue">{{ cell.value }}</td>
+              </tr>
+            </ng-container>
+            <ng-template #showAllData>
+              <tr *ngFor="let row of tableData">
+                <td *ngFor="let cell of row | keyvalue">{{ cell.value }}</td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </table>
+      </div>
+      <!-- <div class="alert alert-danger w-100" role="alert" *ngIf="hasError">
+        No se encontro respuesta!
+      </div> -->
     </div>
-    <div class="alert alert-danger" role="alert" *ngIf="hasError">
-      No se encontro respuesta!
-    </div>
+    
+    <!-- end -->
+    
   </div>
           
+
+
+
+ 
