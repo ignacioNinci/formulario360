@@ -2,6 +2,9 @@
 # FormsProjectPagos360
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+1. correr el comando npm install para instalar el paquete node_modules.
+2. correr el comando ng serve para correr el proyecto.
+3. para ingresar al sistema debe poder loguarse con las credenciales correctas usuario: pagos360, password: 123abc
 
 ## Development server
 
