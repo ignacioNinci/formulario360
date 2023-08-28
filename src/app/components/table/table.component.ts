@@ -1,11 +1,19 @@
+import { transition } from '@angular/animations';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Table } from 'primeng/table';
 import { Subscription, map } from 'rxjs';
 import { Datum, ExecuteQueryActionsScreen } from 'src/app/interfaces/interfaces';
 import { GetCollectionsService } from 'src/app/services/get-collections.service';
 import Swal from 'sweetalert2';
 
 
+interface PageEvent {
+  first: number;
+  rows: number;
+  page: number;
+  pageCount: number;
+}
 
 @Component({
   selector: 'app-table',
@@ -14,7 +22,41 @@ import Swal from 'sweetalert2';
 })
 export class TableComponent implements OnInit {
 
+  first: number = 0;
+  @ViewChild('dt1') dataTable!: Table
+
+    rows: number = 10;
+
+    onPageChange(event: PageEvent | any) {
+        this.first = event.first;
+        this.rows = event.rows;
+    }
+
+    onInputChanged(event: any) {
+      if (event.target) {
+          const filterValue = event.target.value;
+          this.dataTable.filterGlobal(filterValue, 'contains');
+      }
+  }
   
+    getColumnProperties(dataTable: any[]): string[] {
+      const properties: string[] = [];
+  
+      if (dataTable && dataTable.length > 0) {
+          const firstObject = dataTable[0];
+          for (const prop in firstObject) {
+              if (firstObject.hasOwnProperty(prop)) {
+                properties.push(prop);
+              }
+          }
+      }
+  
+      return properties;
+  }
+
+  clear(table: Table) {
+    table.clear();
+  }
 
   constructor( private getColl: GetCollectionsService,
                private fb: FormBuilder ) { }
@@ -28,7 +70,8 @@ export class TableComponent implements OnInit {
   filterDate: string = ''
 
   ngOnInit(): void {
-    // this.getAllCollections();
+    this.totalPages = this.calculateTotalPages();
+    this.changePage(1);
   }
 
 
@@ -38,17 +81,6 @@ export class TableComponent implements OnInit {
     available: ['', [Validators.maxLength(10)]]
   })
   
-  // get dateError() {
-  //   return this.miFormulario.get('date')?.hasError('maxlength');
-  // }
-
-  // get availableError() {
-  //   return this.miFormulario.get('available')?.hasError('maxlength');
-  // }
-
-  // get nameError() {
-  //   return this.miFormulario.get('name')?.hasError('maxlength');
-  // }
 
   getAllCollections(): void {
     this.loading = !this.loading;
@@ -56,10 +88,27 @@ export class TableComponent implements OnInit {
     this.dataSubscription = this.getColl.getCollections().pipe(
       map((res: ExecuteQueryActionsScreen) => {
         let { data } = res;
+
+        const traslation: Datum = {
+          informed_date: 'Fecha informada',
+          request_id: 'ID de solicitud',
+          external_reference: 'Referencia externa',
+          payer_name: 'Nombre del pagador',
+          description: 'Descripcion',
+          payment_date: 'Pago',
+          channel: 'Canal',
+          amount_paid: 'Cantidad pagada',
+          net_fee: 'Tarifa neta',
+          iva_fee: 'Tarifa de IVA',
+          net_amount: 'Importe neto',
+          available_at: 'Disponible en'
+        }
+
         let newData = data.map(item => {
-          let informedDate = item.informed_date.split('T')[0].split('-').reverse().join('-');
-          let paymentDay = item.payment_date.split('T')[0].split('-').reverse().join('-');
-          let availableAt = item.available_at.split('T')[0].split('-').reverse().join('-');
+          let informedDate = item.informed_date.split('T')[0].split('-').reverse().join('/');
+          let paymentDay = item.payment_date.split('T')[0].split('-').reverse().join('/');
+          let availableAt = item.available_at.split('T')[0].split('-').reverse().join('/');
+         
           return {
             ...item,
             available_at: availableAt,
@@ -132,6 +181,36 @@ export class TableComponent implements OnInit {
       this.isShow = true;
     }
   }
+
+
+
+  itemsPerPage = 10; // Cantidad de elementos por página
+    currentPage = 1; // Página actual
+    totalPages: number[] = []; // Array de números de página
+
+   
+
+    calculateTotalPages(): number[] {
+        const totalItems = this.filteredDataTable.length > 0 ? this.filteredDataTable.length : this.tableData.length;
+        const pages = Math.ceil(totalItems / this.itemsPerPage);
+        return Array.from({ length: pages }, (_, i) => i + 1);
+    }
+
+    changePage(pageNumber: number) {
+        this.currentPage = pageNumber;
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        
+        if (this.filteredDataTable.length > 0) {
+            this.tableData = this.filteredDataTable.slice(startIndex, endIndex);
+        } else {
+            this.tableData = this.tableData.slice(startIndex, endIndex);
+        }
+    }
+
+
+
+
 
 
 

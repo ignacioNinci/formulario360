@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
       this.hasError = !this.auth.login(this.user, this.password);
       this.loading = false;
       if (!this.hasError) {
-        this.root.navigate(['/formulario']);
+        this.root.navigate(['/dashboards']);
       }
     }, 2000);
   }

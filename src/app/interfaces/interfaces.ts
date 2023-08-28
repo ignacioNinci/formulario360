@@ -9,15 +9,15 @@ export interface ExecuteQueryActionsScreen {
 
 export interface Datum {
     informed_date:      string;
-    request_id:         number;
+    request_id:         number | string;
     external_reference: string;
     payer_name:         string;
     description:        string;
     payment_date:       string;
     channel:            string;
-    amount_paid:        number;
-    net_fee:            number;
-    iva_fee:            number;
-    net_amount:         number;
+    amount_paid:        number | string;
+    net_fee:            number | string;
+    iva_fee:            number | string;
+    net_amount:         number | string;
     available_at:       string;
 }

@@ -6,21 +6,17 @@
     </div>
     <hr class="styled-hr">
     <div class="row w-100 d-flex justify-content-center">
-        <form action="" (submit)="login()" [formGroup]="miFormulario" class="w-25">
+        <form action="" (submit)="login()" [formGroup]="miFormulario" class="w-25 contenedor p-5 border border-danger">
             <div class="col mb-2">
-                <input type="text" class="form-control mb-2 bg-transparent border-1 text-white inputPlace hover-success" placeholder="User" formControlName="user">
+                <label for="" class="form-label text-white">Usuario:</label>
+                <input type="text" class="form-control mb-3 bg-transparent border-1 text-white inputPlace hover-success" placeholder="User" formControlName="user">
+                <label for="" class="form-label text-white">Contraseña:</label>
                 <input type="password" class="form-control bg-transparent border-1 text-white inputPlace hover-success" placeholder="password" formControlName="pass">
                 <div *ngIf="hasError">
-                    <p class="text-danger">usuario o contrasenia incorrectos!</p>
+                    <p class="text-danger">usuario o contraseña incorrectos!</p>
                 </div>
             </div>
-            <button type="submit" class="btn btn-outline-primary text-white w-100">
-                <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                Ingresar 
-                <div class="spinner-border align-center" role="status" *ngIf="loading">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </button>
+            <button pButton icon="pi pi-sign-in" label="INICIAR SESIÓN" type="submit" class="w-100" [loading]="loading" loadingIcon="pi pi-spin pi-sync"></button>
         </form>
     </div>
     

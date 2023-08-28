@@ -1,52 +1,50 @@
-<app-header></app-header>
-<div class="m-5">
+<!-- <app-header></app-header> -->
+<div class="m-5 main-content">
     <div class="container d-flex flex-row justify-content-between">
-        <h1 class="text-light">Reporte de Cobranzas</h1>
+        <h1 class="text-light titulo">Reporte de Cobranzas</h1>
         <div>
-          <button class="btn btn-outline-primary text-white" (click)="getAllCollections()">
-            Mostrar
-            <div class="spinner-border text-primary align-center" role="status" *ngIf="loading">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </button>
+          <button pButton label="MOSTRAR" type="button" icon="pi pi-chevron-circle-down" class="p-button-rounded p-button-info" [loading]="loading" loadingIcon="pi pi-spin pi-sync" (click)="getAllCollections()"></button>
         </div>
     </div>
     <hr class="styled-hr">
 
     <!-- init -->
-    <div class="d-flex flex-row w-100 gap-3">
-      <app-forms *ngIf="isShow && !loading || hasError" (formValue)="formDataChange($event)"></app-forms>
-      <div class="table-responsive w-100 card" *ngIf="isShow && !loading">
-        <table class="table table-primary styled-hr table-hover table-bordered">
-          <thead class="table-light">
+    <div class="d-flex flex-row w-100 gap-3 main-content">
+      <div class="table-responsive w-100 card bg-transparent" *ngIf="isShow && !loading">
+        
+      <p-table #dt1 [value]="tableData" [tableStyle]="{ 'min-width': '50rem' }" [globalFilterFields]="getColumnProperties(tableData)"
+      selectionMode="single" [rows]="4" [paginator]="true">
+        <ng-template pTemplate="caption">
+          <div class="d-flex justify-content-between">
+              <button pButton label="Limpiar" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+              <span class="p-input-icon-left ml-auto">
+                  <i class="pi pi-search"></i>
+                  <input pInputText type="text" (input)="onInputChanged($event)" placeholder="Buscar..." />
+              </span>
+          </div>
+      </ng-template>
+        <ng-template pTemplate="header">
             <tr>
-              <th scope="col" *ngFor="let column of tableData[0] | keyvalue">{{ column.key | uppercase }}</th>
+              <th [pSortableColumn]="column" scope="col" *ngFor="let column of getColumnProperties(tableData)" class="titulo w-25">
+                {{ column | uppercase }} 
+                <p-sortIcon [field]="column"></p-sortIcon>
+              </th>
             </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngIf="filteredDataTable.length > 0; else showAllData">
-              <tr *ngFor="let row of filteredDataTable">
-                <td *ngFor="let cell of row | keyvalue">{{ cell.value }}</td>
-              </tr>
-            </ng-container>
-            <ng-template #showAllData>
-              <tr *ngFor="let row of tableData">
-                <td *ngFor="let cell of row | keyvalue">{{ cell.value }}</td>
-              </tr>
-            </ng-template>
-          </tbody>
-        </table>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+          <tr>
+            <td *ngFor="let cell of getColumnProperties(tableData)" class="border-light titulo">{{ rowData[cell] }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr class="align-center">
+              <td colspan="12"><strong> No encontrado.</strong></td>
+          </tr>
+        </ng-template>
+      </p-table>
       </div>
-      <!-- <div class="alert alert-danger w-100" role="alert" *ngIf="hasError">
-        No se encontro respuesta!
-      </div> -->
-    </div>
-    
-    <!-- end -->
-    
+    </div> 
   </div>
           
+<!-- <app-footer></app-footer> -->
 
-
-
- 

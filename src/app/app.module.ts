@@ -10,7 +10,11 @@ import { HeaderComponent } from './components/header/header.component';
 import { LoginComponent } from './components/login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableModule } from 'primeng/table';
-import { FormsComponent } from './components/forms/forms.component';
+import { PaginatorModule } from 'primeng/paginator';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { FooterComponent } from './components/footer/footer.component';
+import { DashboardsComponent } from './components/dashboards/dashboards.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,8 @@ import { FormsComponent } from './components/forms/forms.component';
     TableComponent,
     HeaderComponent,
     LoginComponent,
-    FormsComponent
+    FooterComponent,
+    DashboardsComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +31,10 @@ import { FormsComponent } from './components/forms/forms.component';
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    TableModule
+    TableModule,
+    PaginatorModule,
+    ButtonModule,
+    InputTextModule
   ],
   providers: [],
   bootstrap: [AppComponent]
